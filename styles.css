@@ -659,7 +659,8 @@ body {
 .footer-links {
     position: relative;
     z-index: 10;
-    margin-top: 40px;
+    margin-top: 80px;
+    margin-bottom: 40px;
     animation: fadeInUp 1s ease-out 1.4s both;
 }
 
