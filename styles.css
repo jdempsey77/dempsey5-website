@@ -870,8 +870,9 @@ body {
     .clock-container,
     .joke-container {
         padding: 20px;
-        max-width: 100%;
-        width: 100%;
+        max-width: 90%;
+        width: 90%;
+        margin: 0 auto;
     }
     
     .time {
@@ -916,6 +917,9 @@ body {
     .joke-container {
         padding: 15px;
         border-radius: 15px;
+        max-width: 85%;
+        width: 85%;
+        margin: 0 auto;
     }
     
     .time {
