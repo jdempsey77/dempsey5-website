@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Dempsey5.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Particle Background -->
+        <div id="particles"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="logo-container">
+                <h1 class="logo" id="logo">DEMPSEY5.COM</h1>
+            </div>
+            
+            <div class="welcome-text">
+                <h2 class="welcome-title">Welcome to Our Digital Home</h2>
+            </div>
+            
+            <div class="widgets-container">
+                <div class="clock-widget">
+                    <div class="clock-container">
+                        <div class="clock-header">
+                            <h3>Current Time</h3>
+                            <span class="timezone">EST</span>
+                        </div>
+                        <div class="clock-content">
+                            <div class="time-display">
+                                <span class="time" id="currentTime">--:--:--</span>
+                                <span class="ampm" id="ampm">--</span>
+                            </div>
+                            <div class="date-display">
+                                <span class="date" id="currentDate">-- --, ----</span>
+                                <span class="day" id="currentDay">------</span>
+                            </div>
+                            <div class="timezone-info">
+                                <div class="timezone-detail">
+                                    <span class="label">Timezone</span>
+                                    <span class="value" id="timezoneName">Eastern Time</span>
+                                </div>
+                                <div class="timezone-detail">
+                                    <span class="label">UTC Offset</span>
+                                    <span class="value" id="utcOffset">-05:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="weather-widget">
+                    <div class="weather-container">
+                        <div class="weather-header">
+                            <h3>Current Weather</h3>
+                            <span class="location">30075, GA</span>
+                        </div>
+                        <div class="weather-content">
+                            <div class="weather-icon">🌤️</div>
+                            <div class="weather-temp">
+                                <span class="temp">--°</span>
+                                <span class="unit">F</span>
+                            </div>
+                            <div class="weather-desc">Loading...</div>
+                            <div class="weather-details">
+                                <div class="detail">
+                                    <span class="label">Feels like</span>
+                                    <span class="value">--°F</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="label">Humidity</span>
+                                    <span class="value">--%</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="label">Wind</span>
+                                    <span class="value">-- mph</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="joke-widget">
+                    <div class="joke-container">
+                        <div class="joke-header">
+                            <h3>Daily Dad Joke</h3>
+                            <span class="joke-emoji">😄</span>
+                        </div>
+                        <div class="joke-content">
+                            <div class="joke-text" id="jokeText">Loading dad joke...</div>
+                            <button class="joke-btn" id="newJokeBtn">New Joke</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="floating-elements">
+            <div class="floating-icon">⭐</div>
+            <div class="floating-icon">💫</div>
+            <div class="floating-icon">🌟</div>
+            <div class="floating-icon">✨</div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
