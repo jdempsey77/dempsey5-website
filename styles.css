@@ -272,17 +272,18 @@ body {
 }
 
 .time {
-    font-family: 'Courier New', 'Orbitron', monospace;
+    font-family: 'Courier New', monospace;
     font-size: 3.5rem;
     font-weight: 700;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     font-variant-numeric: tabular-nums;
-    width: 280px;
+    width: 300px;
     display: inline-block;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
+    line-height: 1;
 }
 
 .ampm {
@@ -395,17 +396,18 @@ body {
 }
 
 .time {
-    font-family: 'Courier New', 'Orbitron', monospace;
+    font-family: 'Courier New', monospace;
     font-size: 3.5rem;
     font-weight: 700;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     font-variant-numeric: tabular-nums;
-    width: 280px;
+    width: 300px;
     display: inline-block;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
+    line-height: 1;
 }
 
 .ampm {
@@ -666,15 +668,14 @@ body {
     margin-top: 40px;
     margin-bottom: 20px;
     animation: fadeInUp 1s ease-out 1.4s both;
+    text-align: center;
 }
 
 .footer-content {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .footer-link {
