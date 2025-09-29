@@ -1,3 +1,98 @@
+// Theme Management
+class ThemeManager {
+    constructor() {
+        this.themeToggle = document.getElementById('themeToggle');
+        this.themeIcon = document.getElementById('themeIcon');
+        this.themeColor = document.getElementById('theme-color');
+        this.htmlElement = document.documentElement;
+        
+        this.init();
+    }
+    
+    init() {
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme) {
+            this.setTheme(savedTheme);
+        } else {
+            // Use system preference
+            this.setThemeBasedOnSystemPreference();
+        }
+        
+        // Add event listener for theme toggle
+        if (this.themeToggle) {
+            this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+        
+        // Listen for system preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                this.setThemeBasedOnSystemPreference();
+            }
+        });
+    }
+    
+    setThemeBasedOnSystemPreference() {
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        this.setTheme(prefersDarkMode ? 'dark' : 'light');
+    }
+    
+    setTheme(theme) {
+        // Remove both classes first
+        this.htmlElement.classList.remove('light-mode', 'dark-mode');
+        
+        // Add the appropriate class
+        if (theme === 'light') {
+            this.htmlElement.classList.add('light-mode');
+            this.themeIcon.textContent = '☀️';
+            this.themeColor.content = '#e0e8ff';
+        } else {
+            this.htmlElement.classList.add('dark-mode');
+            this.themeIcon.textContent = '🌙';
+            this.themeColor.content = '#667eea';
+        }
+    }
+    
+    toggleTheme() {
+        const currentTheme = this.htmlElement.classList.contains('light-mode') ? 'light' : 'dark';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        this.setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Add ripple effect to theme toggle button
+        this.createRippleEffect(this.themeToggle);
+    }
+    
+    createRippleEffect(element) {
+        const ripple = document.createElement('div');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size * 2}px;
+            height: ${size * 2}px;
+            left: ${-size / 2}px;
+            top: ${-size / 2}px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+}
+
 // Particle System
 class ParticleSystem {
     constructor() {
@@ -7,8 +102,8 @@ class ParticleSystem {
         this.particleCount = 50;
         
         this.init();
-        this.animate();
         this.resize();
+        this.animate();
         
         window.addEventListener('resize', () => this.resize());
     }
@@ -32,10 +127,30 @@ class ParticleSystem {
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+        
+        // Regenerate particles with new dimensions
+        this.particles = [];
+        for (let i = 0; i < this.particleCount; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 3 + 1,
+                opacity: Math.random() * 0.5 + 0.2
+            });
+        }
     }
     
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Get current theme for particle color
+        const isDarkMode = document.documentElement.classList.contains('dark-mode') || 
+                          (!document.documentElement.classList.contains('light-mode') && 
+                           window.matchMedia('(prefers-color-scheme: dark)').matches);
+        
+        const particleColor = isDarkMode ? 'rgba(255, 255, 255, ' : 'rgba(0, 0, 0, ';
         
         this.particles.forEach(particle => {
             particle.x += particle.vx;
@@ -46,7 +161,7 @@ class ParticleSystem {
             
             this.ctx.beginPath();
             this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+            this.ctx.fillStyle = `${particleColor}${particle.opacity})`;
             this.ctx.fill();
         });
         
@@ -328,148 +443,10 @@ class DadJokesWidget {
     }
 }
 
-
-
 // Interactive Elements
 class InteractiveElements {
     constructor() {
         this.initMouseEffects();
-    }
-    
-    initMemberCards() {
-        const memberCards = document.querySelectorAll('.member-card');
-        
-        memberCards.forEach(card => {
-            card.addEventListener('click', () => {
-                this.createRippleEffect(card);
-                this.showMemberInfo(card);
-            });
-            
-            card.addEventListener('mouseenter', () => {
-                this.createSparkleEffect(card);
-            });
-        });
-    }
-    
-    initExploreButton() {
-        const exploreBtn = document.getElementById('exploreBtn');
-        
-        exploreBtn.addEventListener('click', () => {
-            this.createRippleEffect(exploreBtn);
-            this.showWelcomeMessage();
-        });
-    }
-    
-    createRippleEffect(element) {
-        const ripple = document.createElement('div');
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        
-        ripple.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            left: ${rect.left + rect.width / 2 - size / 2}px;
-            top: ${rect.top + rect.height / 2 - size / 2}px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple-animation 0.6s ease-out;
-            pointer-events: none;
-            z-index: 1000;
-        `;
-        
-        document.body.appendChild(ripple);
-        
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    }
-    
-    createSparkleEffect(element) {
-        for (let i = 0; i < 5; i++) {
-            const sparkle = document.createElement('div');
-            const rect = element.getBoundingClientRect();
-            
-            sparkle.style.cssText = `
-                position: fixed;
-                left: ${rect.left + Math.random() * rect.width}px;
-                top: ${rect.top + Math.random() * rect.height}px;
-                width: 4px;
-                height: 4px;
-                background: white;
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 1000;
-                animation: sparkle-animation 1s ease-out forwards;
-            `;
-            
-            document.body.appendChild(sparkle);
-            
-            setTimeout(() => {
-                sparkle.remove();
-            }, 1000);
-        }
-    }
-    
-    showMemberInfo(card) {
-        const memberNumber = card.dataset.member;
-        const messages = [
-            "Hello! I'm part of the Dempsey family!",
-            "Nice to meet you! Welcome to our site!",
-            "Thanks for visiting our digital home!",
-            "Hope you enjoy exploring our world!",
-            "Welcome to the Dempsey family experience!"
-        ];
-        
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        
-        this.showNotification(randomMessage, 'info');
-    }
-    
-    showWelcomeMessage() {
-        const messages = [
-            "Welcome to the Dempsey family!",
-            "Thanks for exploring our digital home!",
-            "We're glad you're here!",
-            "Enjoy your visit to our site!",
-            "Welcome to our world!"
-        ];
-        
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        
-        this.showNotification(randomMessage, 'welcome');
-    }
-    
-    showNotification(message, type) {
-        const notification = document.createElement('div');
-        const colors = {
-            info: 'linear-gradient(45deg, #4ecdc4, #45b7d1)',
-            welcome: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)'
-        };
-        
-        notification.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: ${colors[type]};
-            color: white;
-            padding: 20px 40px;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            z-index: 1000;
-            animation: notification-animation 3s ease-in-out forwards;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        `;
-        
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
     }
     
     initMouseEffects() {
@@ -494,13 +471,21 @@ class InteractiveElements {
     createMouseTrail(x, y) {
         if (Math.random() > 0.7) {
             const trail = document.createElement('div');
+            
+            // Get current theme for trail color
+            const isDarkMode = document.documentElement.classList.contains('dark-mode') || 
+                              (!document.documentElement.classList.contains('light-mode') && 
+                               window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            const trailColor = isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.4)';
+            
             trail.style.cssText = `
                 position: fixed;
                 left: ${x}px;
                 top: ${y}px;
                 width: 6px;
                 height: 6px;
-                background: rgba(255, 255, 255, 0.6);
+                background: ${trailColor};
                 border-radius: 50%;
                 pointer-events: none;
                 z-index: 1000;
@@ -582,13 +567,76 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Menu Management
+class MenuManager {
+    constructor() {
+        this.menuToggle = document.getElementById('menuToggle');
+        this.menuLinks = document.querySelectorAll('.menu-link');
+        this.init();
+    }
+    
+    init() {
+        if (this.menuToggle) {
+            this.menuToggle.addEventListener('click', () => this.toggleMenu());
+        }
+        
+        // Handle menu link clicks
+        this.menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Don't prevent default for email links or external links
+                if (link.getAttribute('href').startsWith('mailto:') || 
+                    link.getAttribute('href').startsWith('http')) {
+                    return; // Let the browser handle mailto and external links
+                }
+                e.preventDefault();
+                this.setActiveLink(link);
+                this.scrollToSection(link.getAttribute('href'));
+            });
+        });
+        
+        // Handle scroll to update active link
+        window.addEventListener('scroll', () => this.updateActiveLink());
+    }
+    
+    toggleMenu() {
+        // For now, just show/hide mobile menu
+        // This can be expanded for a dropdown menu
+        console.log('Menu toggle clicked');
+    }
+    
+    setActiveLink(activeLink) {
+        this.menuLinks.forEach(link => link.classList.remove('active'));
+        activeLink.classList.add('active');
+    }
+    
+    scrollToSection(sectionId) {
+        if (sectionId === '#home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Note: Email and external links are handled by browser, no scrolling needed
+    }
+    
+    updateActiveLink() {
+        const scrollPos = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // Simple logic to determine active section based on scroll position
+        if (scrollPos < windowHeight * 0.5) {
+            // No active link needed since logo is not clickable
+        }
+        // Note: Email and external links don't need active state based on scroll
+    }
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    new ThemeManager();
     new ParticleSystem();
     new InteractiveElements();
     new WeatherWidget();
     new DigitalClock();
     new DadJokesWidget();
+    new MenuManager();
     
     // Logo click effect
     const logo = document.getElementById('logo');
