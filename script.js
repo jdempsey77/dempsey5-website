@@ -570,15 +570,11 @@ document.head.appendChild(style);
 // Menu Management
 class MenuManager {
     constructor() {
-        this.menuToggle = document.getElementById('menuToggle');
         this.menuLinks = document.querySelectorAll('.menu-link');
         this.init();
     }
     
     init() {
-        if (this.menuToggle) {
-            this.menuToggle.addEventListener('click', () => this.toggleMenu());
-        }
         
         // Handle menu link clicks
         this.menuLinks.forEach(link => {
@@ -598,11 +594,6 @@ class MenuManager {
         window.addEventListener('scroll', () => this.updateActiveLink());
     }
     
-    toggleMenu() {
-        // For now, just show/hide mobile menu
-        // This can be expanded for a dropdown menu
-        console.log('Menu toggle clicked');
-    }
     
     setActiveLink(activeLink) {
         this.menuLinks.forEach(link => link.classList.remove('active'));
