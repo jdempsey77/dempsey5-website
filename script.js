@@ -567,37 +567,14 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Menu Management
+// Menu Management - Simplified (no menu links)
 class MenuManager {
     constructor() {
-        this.menuLinks = document.querySelectorAll('.menu-link');
         this.init();
     }
     
     init() {
-        
-        // Handle menu link clicks
-        this.menuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Don't prevent default for email links or external links
-                if (link.getAttribute('href').startsWith('mailto:') || 
-                    link.getAttribute('href').startsWith('http')) {
-                    return; // Let the browser handle mailto and external links
-                }
-                e.preventDefault();
-                this.setActiveLink(link);
-                this.scrollToSection(link.getAttribute('href'));
-            });
-        });
-        
-        // Handle scroll to update active link
-        window.addEventListener('scroll', () => this.updateActiveLink());
-    }
-    
-    
-    setActiveLink(activeLink) {
-        this.menuLinks.forEach(link => link.classList.remove('active'));
-        activeLink.classList.add('active');
+        // No menu functionality needed - just theme toggle
     }
     
     scrollToSection(sectionId) {
