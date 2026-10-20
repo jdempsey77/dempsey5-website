@@ -11,6 +11,24 @@ current-weather widget (`script.js`) via the OpenWeatherMap API.
 No build or dev server needed — open `index.html` directly in a browser, or
 serve the directory with any static file server. No automated tests.
 
+## Deploy
+
+Read from `release.yaml` on `main`:
+
+| Field | Value |
+|---|---|
+| target | `github-pages` |
+| how | `hand`: nothing to run. GitHub Pages classic serves `main` directly, so the merge to `main` is the deploy |
+| path | none. There is no checkout on any host |
+| script / restart | No script, nothing to restart |
+| smoke | `curl -fsS -m 10 -o /dev/null https://dempsey5.com`, 3 tries. Public, works from anywhere. It checks the page loads, not that the new commit is live |
+| rollback | `hand`: revert the commit on `main`; Pages republishes |
+| ledger | `none`. `/deploy` can't run a `github-pages` target yet, so no ledger line gets written (checks 2 and 6 are open) |
+| order | `70` |
+| secrets | `none`. The OpenWeatherMap key in `script.js` is client-side by design (see Secrets below) |
+
+No tests and no CI yet (`test: null`, `ci: false`; check 4 is open).
+
 ## Where it deploys
 
 GitHub Pages, custom domain via the `CNAME` file (`dempsey5.com`). No
