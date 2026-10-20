@@ -1,0 +1,17 @@
+# release.yaml: the release contract (v1). Schema: _reorg/repo_contract_audit.md.
+contract: 1
+tier: 1
+branch: main
+test: null   # GAP: no tests (static page, no build step)
+ci: false   # GAP: no CI
+secrets: none   # OpenWeatherMap key in script.js is client-side by design (see CLAUDE.md)
+deploy:
+  target: github-pages
+  how: hand   # nothing to run: Pages serves main directly
+  order: 70
+  ledger: none
+  note: "GitHub Pages classic (legacy build from main /): push to main publishes dempsey5.com"
+smoke:
+  command: "curl -fsS -m 10 -o /dev/null https://dempsey5.com"   # public, from anywhere
+  tries: 3
+rollback: hand   # revert the commit on main; Pages republishes
