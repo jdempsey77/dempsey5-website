@@ -9,7 +9,13 @@ current-weather widget (`script.js`) via the OpenWeatherMap API.
 ## How to run it / test it
 
 No build or dev server needed — open `index.html` directly in a browser, or
-serve the directory with any static file server. No automated tests.
+serve the directory with any static file server.
+
+Tests (stdlib Python, no network): `python -m unittest discover -s tests -v`.
+`tests/check_site.py` checks every `.html` page is well-formed (balanced
+tags, doctype, no duplicate ids) and that internal `href`/`src` links and
+`#fragments` resolve; external URLs are skipped. CI
+(`.github/workflows/tests.yml`) runs it plus `node --check script.js`.
 
 ## Deploy
 
@@ -27,7 +33,8 @@ Read from `release.yaml` on `main`:
 | order | `70` |
 | secrets | `none`. The OpenWeatherMap key in `script.js` is client-side by design (see Secrets below) |
 
-No tests and no CI yet (`test: null`, `ci: false`; check 4 is open).
+Tests and CI exist (see above), but `release.yaml` still says `test: null`,
+`ci: false`: flipping those is a separate tier-3 change.
 
 ## Where it deploys
 
