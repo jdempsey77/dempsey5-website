@@ -2,8 +2,8 @@
 contract: 1
 tier: 1
 branch: main
-test: "node --check script.js && /usr/bin/python3 tests/check_site.py && /usr/bin/python3 -m unittest discover -s tests -q"   # = tests.yml (stdlib + node, no network)
-ci: true   # tests.yml on ubuntu-latest, PRs + main
+test: null   # GAP: no tests (static page, no build step)
+ci: false   # GAP: no CI
 secrets: none   # OpenWeatherMap key in script.js is client-side by design (see CLAUDE.md)
 deploy:
   target: github-pages
