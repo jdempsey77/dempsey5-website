@@ -33,9 +33,8 @@ Read from `release.yaml` on `main`:
 | ledger | `deploy`. `/deploy` writes one line on ska's deploy ledger, `--what on-merge --target github-pages`. A failed or timed-out deployment, or a failed smoke, is a fail line |
 | order | `70` |
 | secrets | `none`. The OpenWeatherMap key in `script.js` is client-side by design (see Secrets below) |
-
-Tests and CI exist (see above), but `release.yaml` still says `test: null`,
-`ci: false`: flipping those is a separate tier-3 change.
+| test | `node --check script.js && /usr/bin/python3 tests/check_site.py && /usr/bin/python3 -m unittest discover -s tests -q` (what `tests.yml` runs) |
+| ci | `true` (`.github/workflows/tests.yml`) |
 
 ## Where it deploys
 
