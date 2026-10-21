@@ -7,11 +7,13 @@ ci: false   # GAP: no CI
 secrets: none   # OpenWeatherMap key in script.js is client-side by design (see CLAUDE.md)
 deploy:
   target: github-pages
-  how: hand   # nothing to run: Pages serves main directly
+  how: on-merge   # the merge is the deploy: Pages (legacy build from main) publishes; /deploy waits, smokes, records
+  environment: github-pages   # confirmed 2026-10-21: Pages deployments of main land in this env and reach success
+  path: https://dempsey5.com   # informational (the site URL)
   order: 70
-  ledger: none
+  ledger: deploy
   note: "GitHub Pages classic (legacy build from main /): push to main publishes dempsey5.com"
 smoke:
   command: "curl -fsS -m 10 -o /dev/null https://dempsey5.com"   # public, from anywhere
   tries: 3
-rollback: hand   # revert the commit on main; Pages republishes
+rollback: hand   # a revert PR through /merge; Pages republishes, then /deploy records it

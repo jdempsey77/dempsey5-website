@@ -24,12 +24,13 @@ Read from `release.yaml` on `main`:
 | Field | Value |
 |---|---|
 | target | `github-pages` |
-| how | `hand`: nothing to run. GitHub Pages classic serves `main` directly, so the merge to `main` is the deploy |
-| path | none. There is no checkout on any host |
+| how | `on-merge`: the merge to `main` is the deploy. GitHub Pages classic (legacy build from `main` /) publishes it; `/deploy` runs nothing on a host. It waits for the GitHub deployment of `main`'s SHA in `environment` to reach `success`, runs the smoke on the Mac, then writes the ledger line |
+| environment | `github-pages` (confirmed 2026-10-21: Pages deployments of `main` land there and reach `success`) |
+| path | `https://dempsey5.com` (informational, the site URL). There is no checkout on any host |
 | script / restart | No script, nothing to restart |
-| smoke | `curl -fsS -m 10 -o /dev/null https://dempsey5.com`, 3 tries. Public, works from anywhere. It checks the page loads, not that the new commit is live |
-| rollback | `hand`: revert the commit on `main`; Pages republishes |
-| ledger | `none`. `/deploy` can't run a `github-pages` target yet, so no ledger line gets written (checks 2 and 6 are open) |
+| smoke | `curl -fsS -m 10 -o /dev/null https://dempsey5.com`, 3 tries, run on the Mac after the deployment reports `success`. It checks the page loads; the deployment status is what ties it to the new commit |
+| rollback | `hand`: a revert PR through `/merge`; Pages republishes, then `/deploy` records it |
+| ledger | `deploy`. `/deploy` writes one line on ska's deploy ledger, `--what on-merge --target github-pages`. A failed or timed-out deployment, or a failed smoke, is a fail line |
 | order | `70` |
 | secrets | `none`. The OpenWeatherMap key in `script.js` is client-side by design (see Secrets below) |
 
@@ -42,7 +43,8 @@ GitHub Pages, custom domain via the `CNAME` file (`dempsey5.com`). No
 `.github/workflows/` — this is the classic Pages setup (repo Settings →
 Pages, source = this branch), not an Actions-based deploy. Push to `main`
 and Pages serves the new files directly; there is no separate build/deploy
-step to run.
+step to run. `/deploy dempsey5-website` after a merge only waits for that
+Pages deployment, smokes the site and records it in the ledger.
 
 ## Secrets
 
