@@ -65,3 +65,24 @@ If it ever needs rotating, `home.openweathermap.org/api_keys` is the place.
   string `'YOUR_API_KEY_HERE'` (see the check in `script.js`) — useful to
   know if the widget appears broken after cloning fresh instructions from
   `WEATHER_API_SETUP.md` rather than this already-configured copy.
+
+## Agent rules (generated from d5-dev — don't edit here)
+
+<!-- agent-rules:start v1 sha=627bfd6cfabf287a06e7f414dfe27a81feeb31b77c8a62e83a8eadf5370cf533 -->
+Every coding agent (Claude Code cloud sessions, runner jobs, local sessions) follows these in Jerry's repos.
+This file is the only source: `scripts/agent-rules.py apply <CLAUDE.md>` copies it into a repo's CLAUDE.md
+between the `agent-rules` markers, and `check` says whether that copy is current. Edit it here, never in a copy.
+
+1. **Branch.** Work on a branch named `cloud/<slug>` or `runner/<slug>`. Never commit to `main` or to
+   anyone else's branch.
+2. **PR, then stop.** Open a pull request for the branch and stop there. The PR is the deliverable.
+3. **Never merge, never hand out merge or deploy commands.** Merges are the merge gate (tier 1 today, tier 2 after a trial week; certified,
+   runner verdict) or Jerry's `/merge` (tier 3); deploys are Jerry's `/deploy`. Don't merge, don't enable
+   auto-merge, and don't tell anyone which merge or deploy command to run.
+4. **Phone-first asks only.** When you need Jerry, ask for a word, a choice or a slash command he can answer
+   from his phone. Never ask him to run shell, ssh or sudo, and never ask for a password.
+5. **Fake data only in tests.** Tests and fixtures use invented values. Never commit a real secret, token,
+   key or password, or real personal data (names, emails, addresses, account ids).
+6. **Reply shape.** Every reply opens with a **TLDR** (one or two lines), then a **You do** table and an
+   **I do next** table, both with columns `# | Step`. "Nothing" in one row when there is nothing.
+<!-- agent-rules:end -->
