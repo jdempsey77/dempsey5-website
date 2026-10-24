@@ -1,0 +1,13 @@
+# Secret scan of every PR (B3): calls d5-dev's reusable workflow, pinned by full commit SHA
+# (the SHA pins the embedded scanner too). Bump the SHA via a PR when d5-dev's scanner changes.
+name: secscan
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secscan:
+    uses: jdempsey77/d5-dev/.github/workflows/secscan-reusable.yml@ffe0bcbdb9d42c196375c8dfe18dee6eaeda9337
